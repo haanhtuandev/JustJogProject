@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JustJog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="design.css">
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <div class="dropdown" id="dropdown">
+                <div class="settings-icon" id="settings-icon">
+                    &#9776; 
+                </div>
+            </div>
+            <div class="logo">JustJog</div>
+        </div>
+        <div class="profile-settings">
+            <img src="profile-icon.png" alt="Profile Icon" class="profile-icon">
+        </div>
+    </header>
+    <div class="sidebar" id="sidebar">
+        <div class="dropdown" id="sidebar-dropdown">
+            <div class="settings-icon" id="sidebar-settings-icon">
+                &#9776; 
+            </div>
+        </div>
+        <a href="#">Schedule</a>
+        <a href="stat.html">Stats</a>
+    </div>
+    <div class="home-screen">
+        <div class="greeting">
+            <h2 id="username-greet">Hi</h2>
+            <h2>Keep pushing your limits!</h2>
+    
+        </div>
+        <div class="main">
+
+            <h3>Upload your CSV file to see Run Stats</h3>
+            
+            <form method = "POST" enctype="multipart/form-data" action = "/">    
+                <input id="file" type="file" name="file" accept=".csv">
+                <input id="upload" type = "submit" value="Upload">  
+            </form>
+            
+            
+            <form id="caloriesForm" enctype="multipart/form-data">
+            
+                <button type="submit">See my result</button>
+            </form>
+    
+            <!--<div id="result"></div>-->
+    
+            <script>
+           
+
+                document.getElementById('caloriesForm').addEventListener('submit', function calculate(event) {
+                    event.preventDefault();
+                    
+                    fetch('/calculate', {
+                        method: 'POST'
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            document.getElementById('result').innerText = "Error: " + data.error;
+                        } else {
+                            document.getElementById('result').innerText = 
+                                "Calories: " + data.calo + "\n" +
+                                "Velocity: " + data.Velocity;
+                        }
+                    })
+                    .catch(error => {
+                        document.getElementById('result').innerText = "An error occurred: " + error;
+                    });
+                });
+            </script>
+            
+        </div>
+
+
+
+
+
+
+        
+        <div class="content" id="result-panel">
+            <div class="map-section">
+                <div class="map-placeholder">
+                    <img src="mapped.png">
+                </div>
+            </div>
+            <div class="stats-section">
+                <div class="stats">
+                    <div class="stat-row">
+                        <div class="stat-card">
+                            <h3>Distance covered</h3>
+                            <p id="total_displacement">0.51 km</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Average speed</h3>
+                            <p id="velocity">13.25 km/h</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Total time</h3>
+                            <p id="total_time"> 2 minutes 19 seconds</p>
+                        </div>
+                    
+                        <div class="stat-card" id="calories">
+                            <h3>Calories Burned</h3>
+                            <p id="calories_burnt">20 kcal</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="quick-start">
+                    <button class="quick-start-button">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        
+    </div>
+    <script type="module" src="script.js"></script>
+    <script type="module" src="firebase.js"></script>
+    <script type="module">
+        const firebaseConfig = {
+            apiKey: "AIzaSyDomFP_7Pv4CTpBTaHMzcmdNlK_S2s28DY",
+            authDomain: "justjogauthentication.firebaseapp.com",
+            databaseURL: "https://justjogauthentication-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "justjogauthentication",
+            storageBucket: "justjogauthentication.appspot.com",
+            messagingSenderId: "419798942200",
+            appId: "1:419798942200:web:df39c79374f7533a26d60d"
+        };
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        const app = initializeApp(firebaseConfig);
+        import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        const auth = getAuth();
+        import { getDatabase, ref, set, get, child, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+        const db = getDatabase(app);
+        const dbRef = ref(db);
+        const greeting = document.getElementById('username-greet')
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in
+                const userId = user.uid;
+                // Now you can use userId to get user data from the database
+                get(child(dbRef, `user/${userId}`)).then((snapshot) => {
+                    if (snapshot.exists()) {
+                        greeting.innerHTML = "Hi " + snapshot.val().username + "!";
+                    } else {
+                        console.log("No data available");
+                    }
+                    }).catch((error) => {
+                    console.error(error);
+                });
+            } else {
+                // User is not signed in
+                console.log("No user signed in");
+            }
+        });
+
+        
+
+      </script>
+
+
+</body>
+</html>

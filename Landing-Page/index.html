@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JustJog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<body>
+    <div class="body-content">
+
+        <div class="signin">
+            <form>
+    
+                <div class="container">
+                  <input type="email" id="log-email" placeholder="Email" name="uname" required >
+                  <input type="password" id="log-password" placeholder="Password" name="psw" required>
+                  <button type="button" id="login">Sign in</button>
+                </div>
+              </form>
+        </div>
+
+        <div class="signup">
+            <form>
+    
+                <div class="container-signup">
+                  <input type="text" id="username" placeholder="Username" name="uname" required >
+                  <input type="email" id="email" placeholder="Email" name="ema" required>
+                  <input type="password" id="password" placeholder="Password" name="psw" required>
+                  <button type="submit" id="submit">Sign up</button>
+                </div>
+              </form>
+        </div>
+        
+        <div class="panel-layer">
+            <div class="left-panel">
+                <div class="welcome">
+                    <h1>First time at JustJog?</h1>
+                    <p>A simple, straightforward, hassle-free jogging application</p>
+                    <img src="assets/runner.png">
+                    <h2>Already a member? Sign in now!</h2>
+                    <button class="sign_in" id="sign-in-btn">Sign in</button>
+                </div>
+            </div>
+    
+            <div class="right-panel">
+                <div class="welcome-back">
+                    <h1>Welcome back to JustJog!</h1>
+                    <p>A website made by VGU CSE2023 Multi-disciplinary Project</p>
+                    <img src="assets/jogging.png">
+                    <h2>New to our website? Sign up now!</h2>
+                    <button class="sign_up" id="sign-up-btn">Sign up</button>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <script type="module" src="firebase.js"></script>
+    <script type="module" src="index.js"></script>
+</body>
+
+
+
+</html>
